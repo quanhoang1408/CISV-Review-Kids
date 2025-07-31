@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đánh giá Kids sau Trại hè</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f5f5f5;
+        color: #333;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* Login Screen */
+      .login-screen {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      .login-card {
+        background: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
+      }
+
+      .login-card h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #2c3e50;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #555;
+      }
+
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 6px;
+        font-size: 16px;
+        background-color: white;
+        transition: border-color 0.3s;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus {
+        outline: none;
+        border-color: #3498db;
+      }
+
+      .btn {
+        padding: 12px 24px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .btn:hover {
+        background-color: #2980b9;
+      }
+
+      .btn:disabled {
+        background-color: #bdc3c7;
+        cursor: not-allowed;
+      }
+
+      .btn-small {
+        padding: 8px 16px;
+        font-size: 14px;
+      }
+
+      .btn-secondary {
+        padding: 10px 20px;
+        background-color: #95a5a6;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s;
+      }
+
+      .btn-secondary:hover {
+        background-color: #7f8c8d;
+      }
+
+      .btn-success {
+        background-color: #27ae60;
+      }
+
+      .btn-success:hover {
+        background-color: #229954;
+      }
+
+      /* Evaluation Screen */
+      .evaluation-screen {
+        display: none;
+      }
+
+      .header {
+        background: white;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .header h2 {
+        color: #2c3e50;
+      }
+
+      .kids-summary {
+        background: white;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      }
+
+      .kids-summary h3 {
+        color: #2c3e50;
+        margin-bottom: 15px;
+      }
+
+      .kids-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 10px;
+      }
+
+      .kid-card {
+        padding: 10px;
+        background-color: #f8f9fa;
+        border-radius: 6px;
+        border: 1px solid #e0e0e0;
+        font-size: 14px;
+        position: relative;
+      }
+
+      .kid-card.completed {
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+      }
+
+      .kid-card.incomplete {
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+      }
+
+      .completion-status {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+      }
+
+      .completion-status.completed {
+        background-color: #28a745;
+      }
+
+      .completion-status.incomplete {
+        background-color: #dc3545;
+      }
+
+      .completion-status.empty {
+        background-color: #6c757d;
+      }
+
+      .kid-card strong {
+        color: #2c3e50;
+      }
+
+      .evaluation-form {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        margin-bottom: 20px;
+      }
+
+      .evaluation-form h3 {
+        color: #2c3e50;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #ecf0f1;
+      }
+
+      .section {
+        margin-bottom: 30px;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .section-title {
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 15px;
+        font-size: 18px;
+      }
+
+      .criteria-group {
+        margin-bottom: 20px;
+      }
+
+      .criteria-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px;
+        margin-bottom: 10px;
+        background-color: white;
+        border-radius: 6px;
+        border: 1px solid #e0e0e0;
+      }
+
+      .criteria-text {
+        flex: 1;
+        margin-right: 20px;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .radio-group {
+        display: flex;
+        gap: 20px;
+      }
+
+      .radio-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .radio-wrapper input[type="radio"] {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+      }
+
+      .radio-wrapper label {
+        cursor: pointer;
+        font-size: 14px;
+        user-select: none;
+      }
+
+      .text-response {
+        margin-top: 15px;
+      }
+
+      .text-response label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #555;
+      }
+
+      .text-response textarea {
+        width: 100%;
+        min-height: 100px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+        font-family: inherit;
+        resize: vertical;
+        transition: border-color 0.3s;
+      }
+
+      .text-response textarea:focus {
+        outline: none;
+        border-color: #3498db;
+      }
+
+      .navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 15px 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      }
+
+      .nav-info {
+        font-size: 16px;
+        color: #555;
+      }
+
+      .nav-buttons {
+        display: flex;
+        gap: 10px;
+      }
+
+      .action-buttons {
+        margin-top: 30px;
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+      }
+
+      .loading {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        z-index: 1000;
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .spinner {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #3498db;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 15px;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .success-message {
+        display: none;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #27ae60;
+        color: white;
+        padding: 15px 25px;
+        border-radius: 6px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        animation: slideIn 0.3s ease-out;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 10px;
+        }
+
+        .criteria-item {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .criteria-text {
+          margin-right: 0;
+          margin-bottom: 10px;
+        }
+
+        .radio-group {
+          width: 100%;
+          justify-content: flex-start;
+        }
+
+        .navigation {
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .nav-buttons {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .action-buttons {
+          flex-direction: column;
+        }
+
+        .btn {
+          width: 100%;
+        }
+
+        .kids-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="loginScreen" class="login-screen">
+      <div class="login-card">
+        <h2>Đánh giá Participants sau Trại hè</h2>
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="campSelect">Chọn trại:</label>
+            <select id="campSelect" required>
+              <option value="">-- Chọn trại --</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="leaderSelect">Chọn Leader:</label>
+            <select id="leaderSelect" required disabled>
+              <option value="">-- Chọn trại trước --</option>
+            </select>
+          </div>
+
+          <button
+            type="submit"
+            class="btn"
+            style="margin-top: 20px; width: 100%"
+          >
+            Bắt đầu đánh giá
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div id="evaluationScreen" class="evaluation-screen">
+      <div class="container">
+        <div class="header">
+          <h2>Đánh giá Participants - <span id="leaderDisplayName"></span></h2>
+          <button class="btn-secondary" onclick="backToLogin()">
+            Quay lại
+          </button>
+        </div>
+
+        <div class="kids-summary">
+          <h3>
+            Danh sách Participants cần đánh giá (<span
+              id="totalKidsDisplay"
+            ></span>
+            người)
+          </h3>
+          <div class="kids-grid" id="kidsGrid"></div>
+        </div>
+
+        <div class="navigation">
+          <div class="nav-info">
+            Đang đánh giá:
+            <strong><span id="currentKidName"></span></strong> (<span
+              id="currentKidIndex"
+            ></span
+            >/<span id="totalKids"></span>)
+          </div>
+          <div class="nav-buttons">
+            <button
+              class="btn btn-small btn-secondary"
+              id="prevBtn"
+              onclick="previousKid()"
+            >
+              ← Trước
+            </button>
+            <button
+              class="btn btn-small btn-secondary"
+              id="nextBtn"
+              onclick="nextKid()"
+            >
+              Tiếp →
+            </button>
+          </div>
+        </div>
+
+        <div class="evaluation-form" id="evaluationForm"></div>
+
+        <div class="action-buttons">
+          <button class="btn btn-success" onclick="saveCurrentEvaluation()">
+            Lưu đánh giá cho bạn này
+          </button>
+          <button class="btn" onclick="submitAllEvaluations()">
+            Hoàn thành và gửi tất cả
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Đang xử lý...</p>
+    </div>
+
+    <div id="successMessage" class="success-message">
+      Đã lưu đánh giá thành công!
+    </div>
+
+    <script type="module">
+      // Firebase config - Lấy từ Firebase Console
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        get,
+        push,
+      } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyA9y3i5qSFRTsobvTE0vaZqUi_fhrPyacs",
+        authDomain: "cisv-mimi-25.firebaseapp.com",
+        databaseURL:
+          "https://cisv-mimi-25-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "cisv-mimi-25",
+        storageBucket: "cisv-mimi-25.firebasestorage.app",
+        messagingSenderId: "504903462295",
+        appId: "1:504903462295:web:439f01f1fd235f7edd68d2",
+        measurementId: "G-L3M1VQ7Z51",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+
+      let currentState = {
+        leader: { name: "", phone: "", email: "", camp: "" },
+        kids: [],
+        currentKidIndex: 0,
+        evaluations: {},
+      };
+
+      let campData = {};
+
+      const evaluationSections = [
+        {
+          id: "section1",
+          title: "1.1. Develop intercultural competence and self-awareness",
+          subtitle:
+            "Phát triển sự thấu hiểu về sự đa dạng văn hóa và nhận thức về bản thân",
+          questions: [
+            {
+              id: "1a",
+              text: "1a) Nâng cao nhận thức về các quan điểm văn hóa và cá nhân khác nhau (K)",
+            },
+            {
+              id: "1b",
+              text: "1b) So sánh quan điểm của chính mình với quan điểm của người khác (A)",
+            },
+            {
+              id: "1c",
+              text: "1c) Suy ngẫm về những thách thức để có quan điểm riêng trong thời gian trại (S)",
+            },
+            {
+              id: "1d",
+              text: "1d) Sử dụng nhận thức văn hóa trong cuộc sống trại hàng ngày (S)",
+            },
+          ],
+          textQuestion: {
+            id: "text1",
+            text: "1.2. Sự thấu hiểu về sự đa dạng văn hóa và nhận thức về bản thân của bạn nhỏ được thể hiện như thế nào?",
+          },
+        },
+        {
+          id: "section2",
+          title: "2.1. Develop leadership skills",
+          subtitle: "Phát triển kỹ năng lãnh đạo",
+          questions: [
+            {
+              id: "2a",
+              text: "2a) Chủ động xây dựng một cộng đồng trại vững mạnh (S)",
+            },
+            {
+              id: "2b",
+              text: "2b) Hỗ trợ các giá trị và quy tắc của nhóm (A)",
+            },
+            {
+              id: "2c",
+              text: "2c) Lập kế hoạch và tham gia triển khai các hoạt động xuyên suốt trại (S)",
+            },
+          ],
+          textQuestion: {
+            id: "text2",
+            text: "2.2. Kỹ năng lãnh đạo được thể hiện qua những dấu hiệu nào?",
+          },
+        },
+        {
+          id: "section3",
+          title: "3.1. Demonstrate positive attitudes towards others",
+          subtitle: "Thể hiện thái độ tích cực với người khác",
+          questions: [
+            {
+              id: "3a",
+              text: "3a) Đóng góp vào hoạt động hàng ngày của trại (A)",
+            },
+            { id: "3b", text: "3b) Tham gia các hoạt động (A)" },
+            { id: "3c", text: "3c) Tôn trọng quan điểm của người khác (A)" },
+            { id: "3d", text: "3d) Làm việc để giải quyết xung đột (S)" },
+          ],
+          textQuestion: {
+            id: "text3",
+            text: "3.2. Điều gì chứng tỏ bạn nhỏ đã có thái độ tích cực ở trong thời gian trại?",
+          },
+        },
+        {
+          id: "section4",
+          title: "4.1. Develop personal desire for active global citizenship",
+          subtitle:
+            "Phát triển nguyện vọng bản thân để trở thành công dân toàn cầu tích cực",
+          questions: [
+            {
+              id: "4a",
+              text: "4a) Chia sẻ quan điểm cá nhân về các chủ đề liên quan đến lĩnh vực nội dung (A)",
+            },
+            {
+              id: "4b",
+              text: "4b) Thảo luận về cách trở thành công dân tích cực (K)",
+            },
+            {
+              id: "4c",
+              text: "4c) Hiểu mục đích của hoạt động tổ chức cùng chí hướng (K)",
+            },
+          ],
+          textQuestion: {
+            id: "text4",
+            text: "4.2. Nguyện vọng phát triển bản thân trở thành công dân toàn cầu tích cực được cho thấy ở đâu?",
+          },
+        },
+        {
+          id: "section5",
+          title: "Nhận xét chung",
+          textQuestion: {
+            id: "text5",
+            text: "Ngoài những điều trên, bạn còn có nhận xét gì về participant của mình? (Tính cách, thái độ, mong muốn, rủi ro, ưu nhược điểm ...)",
+          },
+        },
+      ];
+
+      // Load camp data from Firebase
+      async function loadCampData() {
+        try {
+          const campsRef = ref(database, "camps");
+          const snapshot = await get(campsRef);
+
+          if (snapshot.exists()) {
+            campData = snapshot.val();
+            populateCampSelect();
+            console.log("Data loaded successfully");
+          } else {
+            throw new Error("No data found");
+          }
+        } catch (error) {
+          console.error("Error loading data:", error);
+          alert("Không thể tải dữ liệu. Vui lòng kiểm tra kết nối mạng.");
+        }
+      }
+
+      function populateCampSelect() {
+        const campSelect = document.getElementById("campSelect");
+        Object.keys(campData).forEach((campName) => {
+          const option = document.createElement("option");
+          option.value = campName;
+          option.textContent = campName;
+          campSelect.appendChild(option);
+        });
+      }
+
+      function updateLeadersList() {
+        const campSelect = document.getElementById("campSelect");
+        const leaderSelect = document.getElementById("leaderSelect");
+        const selectedCamp = campSelect.value;
+
+        leaderSelect.innerHTML = '<option value="">-- Chọn leader --</option>';
+        leaderSelect.disabled = !selectedCamp;
+
+        if (selectedCamp && campData[selectedCamp]?.leaders) {
+          campData[selectedCamp].leaders.forEach((leader, index) => {
+            const option = document.createElement("option");
+            option.value = index;
+            option.textContent = leader.name;
+            leaderSelect.appendChild(option);
+          });
+          leaderSelect.disabled = false;
+        }
+      }
+
+      function handleLogin(e) {
+        e.preventDefault();
+
+        const campSelect = document.getElementById("campSelect");
+        const leaderSelect = document.getElementById("leaderSelect");
+        const selectedCamp = campSelect.value;
+        const selectedLeaderIndex = leaderSelect.value;
+
+        if (!selectedCamp || selectedLeaderIndex === "") {
+          alert("Vui lòng chọn trại và leader!");
+          return;
+        }
+
+        const selectedLeader =
+          campData[selectedCamp].leaders[selectedLeaderIndex];
+
+        currentState.leader = {
+          name: selectedLeader.name,
+          phone: selectedLeader.phone,
+          email: selectedLeader.email,
+          camp: selectedCamp,
+        };
+
+        currentState.kids = [...selectedLeader.kids];
+        saveState();
+        showEvaluationScreen();
+      }
+
+      function showEvaluationScreen() {
+        document.getElementById("loginScreen").style.display = "none";
+        document.getElementById("evaluationScreen").style.display = "block";
+
+        document.getElementById("leaderDisplayName").textContent =
+          currentState.leader.name;
+        document.getElementById("totalKids").textContent =
+          currentState.kids.length;
+        document.getElementById("totalKidsDisplay").textContent =
+          currentState.kids.length;
+
+        displayKidsSummary();
+        loadKidEvaluation(0);
+      }
+
+      function displayKidsSummary() {
+        const kidsGrid = document.getElementById("kidsGrid");
+        kidsGrid.innerHTML = "";
+
+        currentState.kids.forEach((kid, index) => {
+          const kidCard = document.createElement("div");
+          const completionStatus = getKidCompletionStatus(kid);
+
+          kidCard.className = `kid-card ${completionStatus.status}`;
+          kidCard.innerHTML = `
+                    <div class="completion-status ${
+                      completionStatus.status
+                    }"></div>
+                    <strong>${kid.name}</strong><br>
+                    Mã: ${kid.code} | Sinh: ${formatDate(kid.dob)}<br>
+                    <small style="color: #666;">${completionStatus.text}</small>
+                `;
+          kidsGrid.appendChild(kidCard);
+        });
+      }
+
+      function getKidCompletionStatus(kid) {
+        const kidKey = `${kid.name}_${kid.code}`;
+        const evaluation = currentState.evaluations[kidKey] || {};
+
+        const requiredQuestions = [
+          "1a",
+          "1b",
+          "1c",
+          "1d",
+          "2a",
+          "2b",
+          "2c",
+          "3a",
+          "3b",
+          "3c",
+          "3d",
+          "4a",
+          "4b",
+          "4c",
+        ];
+        const requiredTextQuestions = [
+          "text1",
+          "text2",
+          "text3",
+          "text4",
+          "text5",
+        ];
+
+        const completedRadio = requiredQuestions.filter(
+          (q) =>
+            evaluation[q] && (evaluation[q] === "YES" || evaluation[q] === "NO")
+        ).length;
+
+        const completedText = requiredTextQuestions.filter(
+          (q) => evaluation[q] && evaluation[q].trim() !== ""
+        ).length;
+
+        const totalQuestions =
+          requiredQuestions.length + requiredTextQuestions.length;
+        const totalCompleted = completedRadio + completedText;
+
+        if (totalCompleted === 0) {
+          return { status: "empty", text: "Chưa bắt đầu" };
+        } else if (totalCompleted === totalQuestions) {
+          return { status: "completed", text: "Hoàn thành" };
+        } else {
+          return {
+            status: "incomplete",
+            text: `${totalCompleted}/${totalQuestions} câu`,
+          };
+        }
+      }
+
+      function loadKidEvaluation(index) {
+        currentState.currentKidIndex = index;
+        const kid = currentState.kids[index];
+
+        document.getElementById("currentKidName").textContent = kid.name;
+        document.getElementById("currentKidIndex").textContent = index + 1;
+
+        document.getElementById("prevBtn").disabled = index === 0;
+        document.getElementById("nextBtn").disabled =
+          index === currentState.kids.length - 1;
+
+        buildEvaluationForm(kid);
+        loadSavedEvaluation(kid);
+      }
+
+      function buildEvaluationForm(kid) {
+        const formContainer = document.getElementById("evaluationForm");
+        formContainer.innerHTML = `<h3>Đánh giá cho: ${kid.name} (Mã: ${kid.code})</h3>`;
+
+        evaluationSections.forEach((section) => {
+          const sectionDiv = document.createElement("div");
+          sectionDiv.className = "section";
+
+          let sectionHTML = `<div class="section-title">${section.title}</div>`;
+
+          if (section.subtitle) {
+            sectionHTML += `<p style="margin-bottom: 15px; color: #666;">${section.subtitle}</p>`;
+          }
+
+          if (section.questions) {
+            sectionHTML += '<div class="criteria-group">';
+            section.questions.forEach((question) => {
+              sectionHTML += `
+                            <div class="criteria-item">
+                                <div class="criteria-text">${question.text}</div>
+                                <div class="radio-group">
+                                    <div class="radio-wrapper">
+                                        <input type="radio" id="${question.id}_yes" name="${question.id}" value="YES">
+                                        <label for="${question.id}_yes">YES</label>
+                                    </div>
+                                    <div class="radio-wrapper">
+                                        <input type="radio" id="${question.id}_no" name="${question.id}" value="NO">
+                                        <label for="${question.id}_no">NO</label>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+            });
+            sectionHTML += "</div>";
+          }
+
+          if (section.textQuestion) {
+            sectionHTML += `
+                        <div class="text-response">
+                            <label for="${section.textQuestion.id}">${section.textQuestion.text}</label>
+                            <textarea id="${section.textQuestion.id}" placeholder="Nhập câu trả lời..."></textarea>
+                        </div>
+                    `;
+          }
+
+          sectionDiv.innerHTML = sectionHTML;
+          formContainer.appendChild(sectionDiv);
+        });
+      }
+
+      function loadSavedEvaluation(kid) {
+        const kidKey = `${kid.name}_${kid.code}`;
+        if (currentState.evaluations[kidKey]) {
+          const savedData = currentState.evaluations[kidKey];
+
+          Object.keys(savedData).forEach((key) => {
+            if (key.startsWith("text")) {
+              const textarea = document.getElementById(key);
+              if (textarea) {
+                textarea.value = savedData[key];
+              }
+            } else {
+              const radio = document.querySelector(
+                `input[name="${key}"][value="${savedData[key]}"]`
+              );
+              if (radio) {
+                radio.checked = true;
+              }
+            }
+          });
+        }
+      }
+
+      function saveCurrentEvaluation() {
+        const kid = currentState.kids[currentState.currentKidIndex];
+        const kidKey = `${kid.name}_${kid.code}`;
+        const evaluation = {};
+
+        evaluationSections.forEach((section) => {
+          if (section.questions) {
+            section.questions.forEach((question) => {
+              const selected = document.querySelector(
+                `input[name="${question.id}"]:checked`
+              );
+              if (selected) {
+                evaluation[question.id] = selected.value;
+              }
+            });
+          }
+
+          if (section.textQuestion) {
+            const textarea = document.getElementById(section.textQuestion.id);
+            if (textarea && textarea.value.trim()) {
+              evaluation[section.textQuestion.id] = textarea.value.trim();
+            }
+          }
+        });
+
+        currentState.evaluations[kidKey] = evaluation;
+        saveState();
+        displayKidsSummary();
+        showSuccessMessage();
+      }
+
+      function showSuccessMessage() {
+        const message = document.getElementById("successMessage");
+        message.style.display = "block";
+        setTimeout(() => {
+          message.style.display = "none";
+        }, 3000);
+      }
+
+      function previousKid() {
+        if (currentState.currentKidIndex > 0) {
+          saveCurrentEvaluation();
+          loadKidEvaluation(currentState.currentKidIndex - 1);
+        }
+      }
+
+      function nextKid() {
+        if (currentState.currentKidIndex < currentState.kids.length - 1) {
+          saveCurrentEvaluation();
+          loadKidEvaluation(currentState.currentKidIndex + 1);
+        }
+      }
+
+      async function submitAllEvaluations() {
+        saveCurrentEvaluation();
+
+        const validationResult = validateAllEvaluations();
+
+        if (!validationResult.isValid) {
+          alert(
+            `Vui lòng hoàn thành đầy đủ đánh giá:\n\n${validationResult.errors.join(
+              "\n"
+            )}`
+          );
+          return;
+        }
+
+        showLoading(true);
+
+        try {
+          const submissionData = prepareSubmissionData();
+          const evaluationsRef = ref(database, "evaluations");
+          await push(evaluationsRef, {
+            timestamp: new Date().toISOString(),
+            leader: currentState.leader,
+            evaluations: submissionData,
+          });
+
+          localStorage.removeItem("evaluationState");
+          showLoading(false);
+          alert("Đã gửi đánh giá thành công! Cảm ơn bạn đã hoàn thành.");
+          resetApplication();
+        } catch (error) {
+          showLoading(false);
+          console.error("Error submitting:", error);
+          alert("Có lỗi xảy ra khi gửi đánh giá. Vui lòng thử lại.");
+        }
+      }
+
+      function validateAllEvaluations() {
+        const errors = [];
+        const requiredQuestions = [
+          "1a",
+          "1b",
+          "1c",
+          "1d",
+          "2a",
+          "2b",
+          "2c",
+          "3a",
+          "3b",
+          "3c",
+          "3d",
+          "4a",
+          "4b",
+          "4c",
+        ];
+        const requiredTextQuestions = [
+          "text1",
+          "text2",
+          "text3",
+          "text4",
+          "text5",
+        ];
+
+        currentState.kids.forEach((kid, index) => {
+          const kidKey = `${kid.name}_${kid.code}`;
+          const evaluation = currentState.evaluations[kidKey] || {};
+          const kidNumber = index + 1;
+
+          const missingRadio = requiredQuestions.filter(
+            (questionId) =>
+              !evaluation[questionId] ||
+              (evaluation[questionId] !== "YES" &&
+                evaluation[questionId] !== "NO")
+          );
+
+          if (missingRadio.length > 0) {
+            errors.push(
+              `Participant ${kidNumber} (${kid.name}): Chưa trả lời ${missingRadio.length} câu hỏi YES/NO`
+            );
+          }
+
+          const missingText = requiredTextQuestions.filter(
+            (questionId) =>
+              !evaluation[questionId] || evaluation[questionId].trim() === ""
+          );
+
+          if (missingText.length > 0) {
+            errors.push(
+              `Participant ${kidNumber} (${kid.name}): Chưa trả lời ${missingText.length} câu hỏi văn bản`
+            );
+          }
+        });
+
+        return {
+          isValid: errors.length === 0,
+          errors: errors,
+        };
+      }
+
+      function prepareSubmissionData() {
+        const evaluations = {};
+
+        currentState.kids.forEach((kid) => {
+          const kidKey = `${kid.name}_${kid.code}`;
+          const evaluation = currentState.evaluations[kidKey] || {};
+
+          evaluations[kidKey] = {
+            kid: kid,
+            evaluation: evaluation,
+          };
+        });
+
+        return evaluations;
+      }
+
+      function resetApplication() {
+        currentState = {
+          leader: { name: "", phone: "", email: "", camp: "" },
+          kids: [],
+          currentKidIndex: 0,
+          evaluations: {},
+        };
+
+        document.getElementById("loginForm").reset();
+        document.getElementById("leaderSelect").disabled = true;
+        backToLogin();
+      }
+
+      function backToLogin() {
+        document.getElementById("loginScreen").style.display = "flex";
+        document.getElementById("evaluationScreen").style.display = "none";
+      }
+
+      function showLoading(show) {
+        document.getElementById("loading").style.display = show
+          ? "block"
+          : "none";
+      }
+
+      function saveState() {
+        localStorage.setItem("evaluationState", JSON.stringify(currentState));
+      }
+
+      function formatDate(dateString) {
+        const date = new Date(dateString);
+        return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+      }
+
+      // Make functions globally accessible
+      window.updateLeadersList = updateLeadersList;
+      window.handleLogin = handleLogin;
+      window.saveCurrentEvaluation = saveCurrentEvaluation;
+      window.previousKid = previousKid;
+      window.nextKid = nextKid;
+      window.submitAllEvaluations = submitAllEvaluations;
+      window.backToLogin = backToLogin;
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", function () {
+        loadCampData();
+
+        document
+          .getElementById("campSelect")
+          .addEventListener("change", updateLeadersList);
+        document
+          .getElementById("loginForm")
+          .addEventListener("submit", handleLogin);
+
+        const savedState = localStorage.getItem("evaluationState");
+        if (savedState) {
+          currentState = JSON.parse(savedState);
+        }
+      });
+    </script>
+  </body>
+</html>
