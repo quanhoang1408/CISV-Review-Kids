@@ -535,13 +535,12 @@
     </div>
 
     <script type="module">
-      // Firebase config - Lấy từ Firebase Console
+      // Firebase config - for loading camp data only
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
       import {
         getDatabase,
         ref,
         get,
-        push,
       } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
 
       const firebaseConfig = {
@@ -558,6 +557,9 @@
 
       const app = initializeApp(firebaseConfig);
       const database = getDatabase(app);
+
+      // Google Sheets configuration
+      const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzd100mtIYZG-qE3MNSr3FrfAdazw0R8IxFYInwq0FwdizFyzLfVZxv-eZxIJx6_WaJ/exec';
 
       let currentState = {
         leader: { name: "", phone: "", email: "", camp: "" },
@@ -978,6 +980,29 @@
         }
       }
 
+      // Submit to Google Sheets
+      async function submitToGoogleSheets(data) {
+        try {
+          const response = await fetch(GOOGLE_SHEETS_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+              'Content-Type': 'text/plain',
+            },
+            body: JSON.stringify({
+              action: 'addEvaluations',
+              data: data
+            })
+          });
+          
+          console.log('Submitted to Google Sheets successfully');
+          return true;
+        } catch (error) {
+          console.error('Error submitting to Google Sheets:', error);
+          throw error;
+        }
+      }
+
       async function submitAllEvaluations() {
         saveCurrentEvaluation();
 
@@ -996,12 +1021,16 @@
 
         try {
           const submissionData = prepareSubmissionData();
-          const evaluationsRef = ref(database, "evaluations");
-          await push(evaluationsRef, {
+          
+          // Prepare data for Google Sheets
+          const sheetsData = {
             timestamp: new Date().toISOString(),
             leader: currentState.leader,
             evaluations: submissionData,
-          });
+          };
+
+          // Submit to Google Sheets only
+          await submitToGoogleSheets(sheetsData);
 
           localStorage.removeItem("evaluationState");
           showLoading(false);
