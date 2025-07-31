@@ -558,8 +558,8 @@
       const app = initializeApp(firebaseConfig);
       const database = getDatabase(app);
 
-      // Google Sheets configuration
-      const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzd100mtIYZG-qE3MNSr3FrfAdazw0R8IxFYInwq0FwdizFyzLfVZxv-eZxIJx6_WaJ/exec';
+      // Google Sheets configuration - FIXED URL from working version
+      const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzd100mtIYZG-qE3MNSr3FrfAdazw0R8IxFYInwq0FwdizFyzLfVZxv-eZxIJx6_WaJ/exec';
 
       let currentState = {
         leader: { name: "", phone: "", email: "", camp: "" },
@@ -980,10 +980,55 @@
         }
       }
 
-      // Submit to Google Sheets
+      // FIXED: Prepare data in the same format as working version
+      function prepareSubmissionData() {
+        const rows = [];
+        const timestamp = new Date().toLocaleString('vi-VN');
+        
+        currentState.kids.forEach(kid => {
+          const kidKey = `${kid.name}_${kid.code}`;
+          const evaluation = currentState.evaluations[kidKey] || {};
+          
+          const row = [
+            timestamp,
+            currentState.leader.name,
+            currentState.leader.phone,
+            currentState.leader.email,
+            currentState.leader.camp,
+            kid.name,
+            kid.code,
+            kid.dob,
+            evaluation['1a'] || '',
+            evaluation['1b'] || '',
+            evaluation['1c'] || '',
+            evaluation['1d'] || '',
+            evaluation['text1'] || '',
+            evaluation['2a'] || '',
+            evaluation['2b'] || '',
+            evaluation['2c'] || '',
+            evaluation['text2'] || '',
+            evaluation['3a'] || '',
+            evaluation['3b'] || '',
+            evaluation['3c'] || '',
+            evaluation['3d'] || '',
+            evaluation['text3'] || '',
+            evaluation['4a'] || '',
+            evaluation['4b'] || '',
+            evaluation['4c'] || '',
+            evaluation['text4'] || '',
+            evaluation['text5'] || ''
+          ];
+          
+          rows.push(row);
+        });
+        
+        return rows;
+      }
+
+      // FIXED: Submit to Google Sheets using same method as working version
       async function submitToGoogleSheets(data) {
         try {
-          const response = await fetch(GOOGLE_SHEETS_URL, {
+          const response = await fetch(SCRIPT_URL, {
             method: 'POST',
             mode: 'no-cors',
             headers: {
@@ -1020,17 +1065,11 @@
         showLoading(true);
 
         try {
+          // FIXED: Use same data format as working version
           const submissionData = prepareSubmissionData();
           
-          // Prepare data for Google Sheets
-          const sheetsData = {
-            timestamp: new Date().toISOString(),
-            leader: currentState.leader,
-            evaluations: submissionData,
-          };
-
-          // Submit to Google Sheets only
-          await submitToGoogleSheets(sheetsData);
+          // Submit to Google Sheets
+          await submitToGoogleSheets(submissionData);
 
           localStorage.removeItem("evaluationState");
           showLoading(false);
@@ -1103,22 +1142,6 @@
           isValid: errors.length === 0,
           errors: errors,
         };
-      }
-
-      function prepareSubmissionData() {
-        const evaluations = {};
-
-        currentState.kids.forEach((kid) => {
-          const kidKey = `${kid.name}_${kid.code}`;
-          const evaluation = currentState.evaluations[kidKey] || {};
-
-          evaluations[kidKey] = {
-            kid: kid,
-            evaluation: evaluation,
-          };
-        });
-
-        return evaluations;
       }
 
       function resetApplication() {
