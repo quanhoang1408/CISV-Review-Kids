@@ -440,7 +440,7 @@
   <body>
     <div id="loginScreen" class="login-screen">
       <div class="login-card">
-        <h2>Đánh giá Participants sau Trại hè</h2>
+        <h2>Đánh giá Participants sau Trại Đông</h2>
         <form id="loginForm">
           <div class="form-group">
             <label for="campSelect">Chọn trại:</label>
@@ -559,7 +559,7 @@
       const database = getDatabase(app);
 
       // Google Sheets configuration - FIXED URL from working version
-      const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzd100mtIYZG-qE3MNSr3FrfAdazw0R8IxFYInwq0FwdizFyzLfVZxv-eZxIJx6_WaJ/exec';
+      const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx9cqBJVu8v2NGTo8YaM-SJ9XjyJ9AHgD4Xg4nfW_bcZw0igW1vFkWyYB29Iu4zsRA3/exec';
 
       let currentState = {
         leader: { name: "", phone: "", email: "", camp: "" },
@@ -677,7 +677,7 @@
       // Load camp data from Firebase
       async function loadCampData() {
         try {
-          const campsRef = ref(database, "camps");
+          const campsRef = ref(database, "ym");
           const snapshot = await get(campsRef);
 
           if (snapshot.exists()) {
