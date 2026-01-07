@@ -425,10 +425,12 @@
 
         .action-buttons {
           flex-direction: column;
+          align-items: center;
         }
 
         .btn {
           width: 100%;
+          max-width: 300px;
         }
 
         .kids-grid {
@@ -518,7 +520,13 @@
           <button class="btn btn-success" onclick="saveCurrentEvaluation()">
             Lưu đánh giá cho bạn này
           </button>
-          <button class="btn" onclick="submitAllEvaluations()">
+          <button class="btn btn-secondary" onclick="previousKid()" id="bottomPrevBtn">
+            ← Trước
+          </button>
+          <button class="btn btn-secondary" onclick="nextKid()" id="bottomNextBtn">
+            Tiếp →
+          </button>
+          <button class="btn" onclick="submitAllEvaluations()" id="submitAllBtn">
             Hoàn thành và gửi tất cả
           </button>
         </div>
@@ -784,6 +792,35 @@
                 `;
           kidsGrid.appendChild(kidCard);
         });
+
+        // Update submit button after updating display
+        updateSubmitButton();
+      }
+
+      function updateSubmitButton() {
+        const allCompleted = currentState.kids.every(kid => {
+          const completionStatus = getKidCompletionStatus(kid);
+          return completionStatus.status === "completed";
+        });
+
+        document.getElementById("submitAllBtn").disabled = !allCompleted;
+        
+        // Update button text to show status
+        if (allCompleted) {
+          document.getElementById("submitAllBtn").textContent = "Hoàn thành và gửi tất cả";
+          document.getElementById("submitAllBtn").classList.remove("btn-secondary");
+          document.getElementById("submitAllBtn").classList.add("btn");
+        } else {
+          const completedCount = currentState.kids.filter(kid => {
+            const completionStatus = getKidCompletionStatus(kid);
+            return completionStatus.status === "completed";
+          }).length;
+          
+          document.getElementById("submitAllBtn").textContent = 
+            `Hoàn thành và gửi tất cả (${completedCount}/${currentState.kids.length} đã xong)`;
+          document.getElementById("submitAllBtn").classList.remove("btn");
+          document.getElementById("submitAllBtn").classList.add("btn-secondary");
+        }
       }
 
       function getKidCompletionStatus(kid) {
@@ -846,9 +883,18 @@
         document.getElementById("currentKidName").textContent = kid.name;
         document.getElementById("currentKidIndex").textContent = index + 1;
 
+        // Update navigation buttons at top
         document.getElementById("prevBtn").disabled = index === 0;
         document.getElementById("nextBtn").disabled =
           index === currentState.kids.length - 1;
+
+        // Update navigation buttons at bottom
+        document.getElementById("bottomPrevBtn").disabled = index === 0;
+        document.getElementById("bottomNextBtn").disabled =
+          index === currentState.kids.length - 1;
+
+        // Update submit button based on completion status
+        updateSubmitButton();
 
         buildEvaluationForm(kid);
         loadSavedEvaluation(kid);
