@@ -576,12 +576,12 @@
         accent-color: var(--primary-color);
       }
 
-      .radio-wrapper input[type="radio"]:checked + label {
+      .radio-wrapper input[type="radio"]:checked + .radio-label {
         color: var(--primary-color);
         font-weight: 600;
       }
 
-      .radio-wrapper label {
+      .radio-wrapper .radio-label {
         cursor: pointer;
         font-size: 14px;
         user-select: none;
@@ -1010,108 +1010,115 @@
       let campData = {};
 
       const evaluationSections = [
-        {
-          id: "section1",
-          title: "1.1. Develop intercultural competence and self-awareness",
-          subtitle:
-            "Phát triển sự thấu hiểu về sự đa dạng văn hóa và nhận thức về bản thân",
-          questions: [
-            {
-              id: "1a",
-              text: "1a) Nâng cao nhận thức về các quan điểm văn hóa và cá nhân khác nhau (K)",
-            },
-            {
-              id: "1b",
-              text: "1b) So sánh quan điểm của chính mình với quan điểm của người khác (A)",
-            },
-            {
-              id: "1c",
-              text: "1c) Suy ngẫm về những thách thức để có quan điểm riêng trong thời gian trại (S)",
-            },
-            {
-              id: "1d",
-              text: "1d) Sử dụng nhận thức văn hóa trong cuộc sống trại hàng ngày (S)",
-            },
-          ],
-          textQuestion: {
-            id: "text1",
-            text: "1.2. Sự thấu hiểu về sự đa dạng văn hóa và nhận thức về bản thân của bạn nhỏ được thể hiện như thế nào?",
-          },
-        },
-        {
-          id: "section2",
-          title: "2.1. Develop leadership skills",
-          subtitle: "Phát triển kỹ năng lãnh đạo",
-          questions: [
-            {
-              id: "2a",
-              text: "2a) Chủ động xây dựng một cộng đồng trại vững mạnh (S)",
-            },
-            {
-              id: "2b",
-              text: "2b) Hỗ trợ các giá trị và quy tắc của nhóm (A)",
-            },
-            {
-              id: "2c",
-              text: "2c) Lập kế hoạch và tham gia triển khai các hoạt động xuyên suốt trại (S)",
-            },
-          ],
-          textQuestion: {
-            id: "text2",
-            text: "2.2. Kỹ năng lãnh đạo được thể hiện qua những dấu hiệu nào?",
-          },
-        },
-        {
-          id: "section3",
-          title: "3.1. Demonstrate positive attitudes towards others",
-          subtitle: "Thể hiện thái độ tích cực với người khác",
-          questions: [
-            {
-              id: "3a",
-              text: "3a) Đóng góp vào hoạt động hàng ngày của trại (A)",
-            },
-            { id: "3b", text: "3b) Tham gia các hoạt động (A)" },
-            { id: "3c", text: "3c) Tôn trọng quan điểm của người khác (A)" },
-            { id: "3d", text: "3d) Làm việc để giải quyết xung đột (S)" },
-          ],
-          textQuestion: {
-            id: "text3",
-            text: "3.2. Điều gì chứng tỏ bạn nhỏ đã có thái độ tích cực ở trong thời gian trại?",
-          },
-        },
-        {
-          id: "section4",
-          title: "4.1. Develop personal desire for active global citizenship",
-          subtitle:
-            "Phát triển nguyện vọng bản thân để trở thành công dân toàn cầu tích cực",
-          questions: [
-            {
-              id: "4a",
-              text: "4a) Chia sẻ quan điểm cá nhân về các chủ đề liên quan đến lĩnh vực nội dung (A)",
-            },
-            {
-              id: "4b",
-              text: "4b) Thảo luận về cách trở thành công dân tích cực (K)",
-            },
-            {
-              id: "4c",
-              text: "4c) Hiểu mục đích của hoạt động tổ chức cùng chí hướng (K)",
-            },
-          ],
-          textQuestion: {
-            id: "text4",
-            text: "4.2. Nguyện vọng phát triển bản thân trở thành công dân toàn cầu tích cực được cho thấy ở đâu?",
-          },
-        },
-        {
-          id: "section5",
-          title: "Nhận xét chung",
-          textQuestion: {
-            id: "text5",
-            text: "Ngoài những điều trên, bạn còn có nhận xét gì về participant của mình? (Tính cách, thái độ, mong muốn, rủi ro, ưu nhược điểm ...)",
-          },
-        },
-      ];
+  {
+    id: "section1",
+    title: "1.1. Develop intercultural competence and self-awareness",
+    subtitle: "Phát triển sự thấu hiểu về sự đa dạng văn hóa và nhận thức về bản thân",
+    questions: [
+      {
+        id: "1a",
+        text: "1a) Hiểu và tôn trọng sự khác biệt về văn hóa, thói quen, và suy nghĩ của mọi người (K) (VD: Biết rằng mỗi người sẽ có quan điểm, tính cách khác mình)",
+      },
+      {
+        id: "1b",
+        text: "1b) Biết đối chiếu góc nhìn của bản thân với người khác một cách cởi mở (A) (VD: Chấp nhận việc mình thích điều này nhưng bạn khác lại không thích, coi đó là sự đa dạng bình thường)",
+      },
+      {
+        id: "1c",
+        text: "1c) Nhận ra và vượt qua khó khăn khi phải giữ vững chính kiến cá nhân trong tập thể (S) (VD: Dám nói lên suy nghĩ của mình dù đa số các bạn trong nhóm có ý kiến ngược lại)",
+      },
+      {
+        id: "1d",
+        text: "1d) Ứng dụng sự thấu hiểu đa văn hóa vào sinh hoạt chung tại trại (S) (VD: Chủ động giúp đỡ bạn khác biệt ngôn ngữ, không trêu chọc thói quen lạ của bạn)",
+      },
+    ],
+    textQuestion: {
+      id: "text1",
+      text: "1.2. Hãy kể lại một vài tình huống thực tế cho thấy bạn thấu hiểu, tôn trọng sự đa dạng văn hóa và nhận thức rõ về bản thân. (VD: Cách bạn tranh luận mà vẫn giữ thái độ hòa nhã, cách phản ứng với những điều mới, v.v.)",
+    },
+  },
+  {
+    id: "section2",
+    title: "2.1. Develop leadership skills",
+    subtitle: "Phát triển kỹ năng lãnh đạo",
+    questions: [
+      {
+        id: "2a",
+        text: "2a) Chủ động gắn kết các thành viên và xây dựng tinh thần tập thể (S) (VD: Hay rủ các bạn đang bơ vơ, ít nói vào chơi cùng nhóm)",
+      },
+      {
+        id: "2b",
+        text: "2b) Tuân thủ và khuyến khích các bạn làm theo nội quy, giá trị chung của trại (A) (VD: Tự giác nhắc nhở bạn bè giữ trật tự khi tới giờ ngủ, cùng nhau dọn rác chung)",
+      },
+      {
+        id: "2c",
+        text: "2c) Hăng hái đóng góp ý tưởng và điều phối các hoạt động của nhóm (S) (VD: Chủ động nhận việc phân công nhiệm vụ cho các bạn trong nhóm khi chơi trò chơi lớn)",
+      },
+    ],
+    textQuestion: {
+      id: "text2",
+      text: "2.2. Bạn nhận thấy tố chất lãnh đạo của bạn qua những dấu hiệu hay hành động cụ thể nào? (VD: Cách bạn giải quyết vấn đề của nhóm, cách bạn dẫn dắt khi được giao làm nhóm trưởng)",
+    },
+  },
+  {
+    id: "section3",
+    title: "3.1. Demonstrate positive attitudes towards others",
+    subtitle: "Thể hiện thái độ tích cực với người khác",
+    questions: [
+      {
+        id: "3a",
+        text: "3a) Nhiệt tình tham gia các hoạt động chung của trại (A) (VD: Làm energizer, kiitos, tham gia TLS, FC9 nhiệt tình,...)",
+      },
+      {
+        id: "3b",
+        text: "3b) Sẵn sàng trải nghiệm mọi hoạt động với năng lượng tích cực (A) (VD: Không ngại bẩn, ngại mệt khi chơi trò chơi vận động, hào hứng đóng góp trong giờ thảo luận)",
+      },
+      {
+        id: "3c",
+        text: "3c) Biết lắng nghe và tôn trọng ý kiến trái chiều (A) (VD: Đợi bạn nói xong mới phát biểu, không bỉ bôi hay chê bai khi bạn đưa ra ý tưởng lạ)",
+      },
+      {
+        id: "3d",
+        text: "3d) Cố gắng hòa giải và tìm tiếng nói chung khi có tranh cãi (S) (VD: Đứng ra can ngăn, xoa dịu khi hai bạn trong nhóm cãi nhau về luật chơi)",
+      },
+    ],
+    textQuestion: {
+      id: "text3",
+      text: "3.2. Hãy mô tả những biểu hiện chứng tỏ bạn luôn giữ thái độ tích cực, hòa nhã với mọi người trong thời gian trại? (VD: Luôn vui vẻ động viên đồng đội dù thua cuộc, biết nói lời xin lỗi/cảm ơn)",
+    },
+  },
+  {
+    id: "section4",
+    title: "4.1. Develop personal desire for active global citizenship",
+    subtitle: "Phát triển nguyện vọng bản thân để trở thành công dân toàn cầu tích cực",
+    questions: [
+      {
+        id: "4a",
+        text: "4a) Tự tin nói lên suy nghĩ của mình về các chủ đề giáo dục của trại (A) (VD: Phát biểu sôi nổi trong giờ sinh hoạt về chủ đề Đa dạng hay Môi trường)",
+      },
+      {
+        id: "4b",
+        text: "4b) Tham gia bàn luận về những việc cần làm để giúp ích cho xã hội (K) (VD: Nêu ý tưởng về việc bảo vệ môi trường hoặc giúp đỡ người yếu thế sau khi kết thúc trại)",
+      },
+      {
+        id: "4c",
+        text: "4c) Nắm bắt được ý nghĩa giáo dục đằng sau các hoạt động của trại (K) (VD: Hiểu được rõ mục đích của các trò chơi)",
+      },
+    ],
+    textQuestion: {
+      id: "text4",
+      text: "4.2. Bạn đã thể hiện sự khao khát thay đổi bản thân hoặc hành động vì cộng đồng qua những lời nói, việc làm cụ thể nào? (VD: Những chia sẻ, lời hứa trong buổi reflection cuối ngày hoặc kế hoạch mang dự án về nhà)",
+    },
+  },
+  {
+    id: "section5",
+    title: "Nhận xét chung",
+    textQuestion: {
+      id: "text5",
+      text: "Đánh giá tổng quan về bạn nhỏ: Tính cách nổi bật, điểm mạnh, điểm cần khắc phục, và những lưu ý rủi ro (nếu có)? (VD: bạn rất năng nổ nhưng thỉnh thoảng còn thiếu kiên nhẫn; có tiềm năng làm Junior Staff/Supporter/etc sau này)",
+    },
+  },
+];
 
       // Load camp data from Firebase
       async function loadCampData() {
@@ -1351,16 +1358,16 @@
               sectionHTML += `
                             <div class="criteria-item">
                                 <div class="criteria-text">${question.text}</div>
-                                <div class="radio-group">
-                                    <div class="radio-wrapper">
-                                        <input type="radio" id="${question.id}_yes" name="${question.id}" value="YES">
-                                        <label for="${question.id}_yes">YES</label>
-                                    </div>
-                                    <div class="radio-wrapper">
-                                        <input type="radio" id="${question.id}_no" name="${question.id}" value="NO">
-                                        <label for="${question.id}_no">NO</label>
-                                    </div>
-                                </div>
+                                  <div class="radio-group">
+                                      <label class="radio-wrapper" for="${question.id}_yes">
+                                          <input type="radio" id="${question.id}_yes" name="${question.id}" value="YES">
+                                          <span class="radio-label">YES</span>
+                                      </label>
+                                      <label class="radio-wrapper" for="${question.id}_no">
+                                          <input type="radio" id="${question.id}_no" name="${question.id}" value="NO">
+                                          <span class="radio-label">NO</span>
+                                      </label>
+                                  </div>
                             </div>
                         `;
             });
